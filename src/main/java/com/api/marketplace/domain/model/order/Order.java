@@ -40,20 +40,31 @@ public class Order {
         return items;
     }
 
-    public void setStatus(OrderStatus newStatus) throws IllegalArgumentException {
-        if(newStatus == null){
-            throw new IllegalArgumentException("Parameter cannot be null");
-        }
-        if(newStatus.equals(OrderStatus.PAID) && !this.status.equals(OrderStatus.CREATED)){
+    public void updateToPaid() {
+        if(!this.status.equals(OrderStatus.CREATED)){
             throw new IllegalArgumentException("Cannot change status to 'Paid' from current status");
         }
-        if(newStatus.equals(OrderStatus.SHIPPED) && !this.status.equals(OrderStatus.PAID)){
+
+        this.status = OrderStatus.PAID;
+    }
+
+    public void updateToShipped() {
+        if(!this.status.equals(OrderStatus.PAID)){
             throw new IllegalArgumentException("Cannot change status to 'Shipped' from current status");
         }
-        if(newStatus.equals(OrderStatus.COMPLETED) && !this.status.equals(OrderStatus.SHIPPED)){
-            throw new IllegalArgumentException("Cannot change status to 'Completed' from current status");
+
+        this.status = OrderStatus.SHIPPED;
+    }
+
+    public void updateToCompleted() {
+        if(!this.status.equals(OrderStatus.SHIPPED)){
+            throw new IllegalArgumentException("Cannot change status to 'Shipped' from current status");
         }
 
-        this.status = newStatus;
+        this.status = OrderStatus.COMPLETED;
+    }
+
+    public void updateToCanceled(){
+        this.status = OrderStatus.CANCELED;
     }
 }
