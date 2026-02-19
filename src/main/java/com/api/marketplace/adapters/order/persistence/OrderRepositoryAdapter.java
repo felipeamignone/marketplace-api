@@ -1,4 +1,4 @@
-package com.api.marketplace.adapters.order.persistence.order;
+package com.api.marketplace.adapters.order.persistence;
 
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;

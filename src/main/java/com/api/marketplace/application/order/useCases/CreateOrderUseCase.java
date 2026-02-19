@@ -1,7 +1,7 @@
 package com.api.marketplace.application.order.useCases;
 
 import com.api.marketplace.application.order.commands.CreateOrderInput;
-import com.api.marketplace.application.order.commands.CreateOrderOutput;
+import com.api.marketplace.application.order.commands.OrderOutput;
 import com.api.marketplace.application.order.commands.OrderItemOutput;
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;
@@ -19,7 +19,7 @@ public class CreateOrderUseCase {
         this.orderRepository = orderRepository;
     }
 
-    public CreateOrderOutput execute(CreateOrderInput input) {
+    public OrderOutput execute(CreateOrderInput input) {
         List<OrderItem> items = input.items().stream().map(item -> new OrderItem(
                 item.name(),
                 new BigDecimal("10.99"), //deve buscar pelo produto cadastrado no banco.
@@ -37,7 +37,7 @@ public class CreateOrderUseCase {
                         item.name()
                 )).toList();
 
-        return new CreateOrderOutput(
+        return new OrderOutput(
                 savedOrder.getId(),
                 savedOrder.getStoreId(),
                 savedOrder.getStatus(),

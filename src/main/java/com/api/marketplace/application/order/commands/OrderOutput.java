@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public record CreateOrderOutput(
+public record OrderOutput(
         UUID id,
         UUID storeId,
         OrderStatus status,

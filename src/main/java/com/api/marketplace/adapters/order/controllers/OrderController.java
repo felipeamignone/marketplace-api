@@ -1,9 +1,10 @@
 package com.api.marketplace.adapters.order.controllers;
 
 import com.api.marketplace.application.order.commands.CreateOrderInput;
-import com.api.marketplace.application.order.commands.CreateOrderOutput;
+import com.api.marketplace.application.order.commands.OrderOutput;
 import com.api.marketplace.application.order.useCases.CreateOrderUseCase;
 import com.api.marketplace.application.order.commands.OrderItemInput;
+import com.api.marketplace.application.order.useCases.FindOrderByIdUseCase;
 import com.api.marketplace.application.order.useCases.UpdateOrderStatusUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,16 @@ import java.util.UUID;
 public class OrderController {
     private final CreateOrderUseCase createOrderUseCase;
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
+    private final FindOrderByIdUseCase findOrderByIdUseCase;
 
     public OrderController(
             CreateOrderUseCase createOrderUseCase,
-            UpdateOrderStatusUseCase updateOrderStatusUseCase
+            UpdateOrderStatusUseCase updateOrderStatusUseCase,
+            FindOrderByIdUseCase findOrderByIdUseCase
     ) {
         this.createOrderUseCase = createOrderUseCase;
         this.updateOrderStatusUseCase = updateOrderStatusUseCase;
+        this.findOrderByIdUseCase = findOrderByIdUseCase;
     }
 
     @PostMapping
@@ -39,23 +43,9 @@ public class OrderController {
                 items
         );
 
-        CreateOrderOutput result = createOrderUseCase.execute(input);
+        OrderOutput result = createOrderUseCase.execute(input);
 
-        List<OrderItemResponse> itemsResponse = result.items().stream()
-                .map(item -> new OrderItemResponse(
-                        item.name(),
-                        item.quantity(),
-                        item.unitPrice()
-                ))
-                .toList();
-
-        OrderResponse response = new OrderResponse(
-                result.id(),
-                result.storeId(),
-                result.status(),
-                itemsResponse,
-                result.totalPrice()
-        );
+        OrderResponse response = OrderMapper.orderOutputToResponse(result);
 
         return ResponseEntity.ok(response);
     }
@@ -65,6 +55,15 @@ public class OrderController {
         this.updateOrderStatusUseCase.execute(orderId, body.status());
 
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> findById (@PathVariable UUID orderId) {
+        OrderOutput result = this.findOrderByIdUseCase.execute(orderId);
+
+        OrderResponse response = OrderMapper.orderOutputToResponse(result);
+
+        return ResponseEntity.ok(response);
     }
 
 

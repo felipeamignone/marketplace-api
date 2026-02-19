@@ -1,4 +1,4 @@
-package com.api.marketplace.adapters.order.persistence.order;
+package com.api.marketplace.adapters.order.persistence;
 
 import jakarta.persistence.*;
 
