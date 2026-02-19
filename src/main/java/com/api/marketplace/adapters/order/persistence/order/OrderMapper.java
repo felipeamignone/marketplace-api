@@ -1,10 +1,12 @@
-package com.api.marketplace.adapters.persistence.order;
+package com.api.marketplace.adapters.order.persistence.order;
 
 import com.api.marketplace.domain.order.model.Order;
 import com.api.marketplace.domain.order.model.OrderItem;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class OrderMapper {
     public OrderJpaEntity toJpa(Order order){
         OrderJpaEntity jpa = new OrderJpaEntity(

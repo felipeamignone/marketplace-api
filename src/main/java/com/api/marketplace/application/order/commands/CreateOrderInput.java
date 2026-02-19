@@ -1,4 +1,4 @@
-package com.api.marketplace.application.useCases.createOrder;
+package com.api.marketplace.application.order.commands;
 
 
 import java.util.List;

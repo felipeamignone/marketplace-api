@@ -1,4 +1,4 @@
-package com.api.marketplace.adapters.persistence.order;
+package com.api.marketplace.adapters.order.persistence.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

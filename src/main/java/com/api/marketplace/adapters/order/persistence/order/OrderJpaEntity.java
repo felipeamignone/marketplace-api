@@ -1,4 +1,4 @@
-package com.api.marketplace.adapters.persistence.order;
+package com.api.marketplace.adapters.order.persistence.order;
 
 import com.api.marketplace.domain.order.model.OrderStatus;
 import jakarta.persistence.*;

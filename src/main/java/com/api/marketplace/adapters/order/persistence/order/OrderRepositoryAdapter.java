@@ -1,10 +1,12 @@
-package com.api.marketplace.adapters.persistence.order;
+package com.api.marketplace.adapters.order.persistence.order;
 
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class OrderRepositoryAdapter implements OrderRepositoryGateway {
     private final OrderRepository repository;
     private final OrderMapper mapper;

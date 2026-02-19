@@ -39,7 +39,7 @@ public class Order {
         return items;
     }
 
-    public void updateToPaid() {
+    private void updateToPaid() {
         if(!this.status.equals(OrderStatus.CREATED)){
             throw new IllegalArgumentException("Cannot change status to 'Paid' from current status");
         }
@@ -47,7 +47,7 @@ public class Order {
         this.status = OrderStatus.PAID;
     }
 
-    public void updateToShipped() {
+    private void updateToShipped() {
         if(!this.status.equals(OrderStatus.PAID)){
             throw new IllegalArgumentException("Cannot change status to 'Shipped' from current status");
         }
@@ -55,7 +55,7 @@ public class Order {
         this.status = OrderStatus.SHIPPED;
     }
 
-    public void updateToCompleted() {
+    private void updateToCompleted() {
         if(!this.status.equals(OrderStatus.SHIPPED)){
             throw new IllegalArgumentException("Cannot change status to 'Shipped' from current status");
         }
@@ -63,8 +63,18 @@ public class Order {
         this.status = OrderStatus.COMPLETED;
     }
 
-    public void updateToCanceled(){
+    private void updateToCanceled(){
         this.status = OrderStatus.CANCELED;
+    }
+
+    public void updateStatus(OrderStatus newStatus) {
+        switch (newStatus){
+            case OrderStatus.CANCELED -> this.updateToCanceled();
+            case OrderStatus.COMPLETED -> this.updateToCompleted();
+            case OrderStatus.SHIPPED -> this.updateToShipped();
+            case OrderStatus.PAID -> this.updateToPaid();
+            default -> throw new IllegalArgumentException("Invalid status");
+        }
     }
 
     public BigDecimal calculateTotalPrice() {

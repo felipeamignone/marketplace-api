@@ -1,11 +1,17 @@
-package com.api.marketplace.application.useCases.createOrder;
+package com.api.marketplace.application.order.useCases;
 
+import com.api.marketplace.application.order.commands.CreateOrderInput;
+import com.api.marketplace.application.order.commands.CreateOrderOutput;
+import com.api.marketplace.application.order.commands.OrderItemOutput;
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;
 import com.api.marketplace.domain.order.model.OrderItem;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+@Service
 public class CreateOrderUseCase {
     private final OrderRepositoryGateway orderRepository;
 
@@ -16,7 +22,7 @@ public class CreateOrderUseCase {
     public CreateOrderOutput execute(CreateOrderInput input) {
         List<OrderItem> items = input.items().stream().map(item -> new OrderItem(
                 item.name(),
-                item.unitPrice(),
+                new BigDecimal("10.99"), //deve buscar pelo produto cadastrado no banco.
                 item.quantity()
         )).toList();
 
@@ -34,6 +40,7 @@ public class CreateOrderUseCase {
         return new CreateOrderOutput(
                 savedOrder.getId(),
                 savedOrder.getStoreId(),
+                savedOrder.getStatus(),
                 savedOrder.calculateTotalPrice(),
                 itemOutputList
         );
