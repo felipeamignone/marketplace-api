@@ -82,4 +82,14 @@ public class Order {
                 .map(OrderItem::calculateTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public String getChangeStatusEventNameFromStatus(OrderStatus status){
+        return switch (status){
+            case OrderStatus.CANCELED -> "order.canceled";
+            case OrderStatus.COMPLETED -> "order.completed";
+            case OrderStatus.SHIPPED -> "order.shipped";
+            case OrderStatus.PAID -> "order.paid";
+            default -> throw new IllegalArgumentException("Invalid status");
+        };
+    }
 }
