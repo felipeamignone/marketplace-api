@@ -6,6 +6,7 @@ import com.api.marketplace.application.order.commands.OrderItemOutput;
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;
 import com.api.marketplace.domain.order.model.OrderItem;
+import com.api.marketplace.domain.store.gateway.StoreRepositoryGateway;
 import com.api.marketplace.domain.webhook.gateway.WebhookEventSenderGateway;
 import com.api.marketplace.domain.webhook.gateway.WebhookRepositoryGateway;
 import com.api.marketplace.domain.webhook.model.WebhookEvent;
@@ -18,18 +19,23 @@ import java.util.List;
 @Service
 public class CreateOrderUseCase {
     private final OrderRepositoryGateway orderRepository;
+    private final StoreRepositoryGateway storeRepositoryGateway;
     private final WebhookRepositoryGateway webhookRepositoryGateway;
     private final WebhookEventSenderGateway webhookEventSender;
 
     public CreateOrderUseCase(OrderRepositoryGateway orderRepository,
+                             StoreRepositoryGateway storeRepositoryGateway,
                              WebhookRepositoryGateway webhookRepositoryGateway,
                              WebhookEventSenderGateway webhookEventSender) {
         this.orderRepository = orderRepository;
+        this.storeRepositoryGateway = storeRepositoryGateway;
         this.webhookRepositoryGateway = webhookRepositoryGateway;
         this.webhookEventSender = webhookEventSender;
     }
 
     public OrderOutput execute(CreateOrderInput input) {
+        storeRepositoryGateway.findById(input.storeId());
+
         List<OrderItem> items = input.items().stream().map(item -> new OrderItem(
                 item.name(),
                 new BigDecimal("10.99"), //deve buscar pelo produto cadastrado no banco.

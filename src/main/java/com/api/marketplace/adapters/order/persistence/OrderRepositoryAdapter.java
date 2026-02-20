@@ -1,5 +1,6 @@
 package com.api.marketplace.adapters.order.persistence;
 
+import com.api.marketplace.domain.exceptions.OrderNotFoundException;
 import com.api.marketplace.domain.order.gateway.OrderRepositoryGateway;
 import com.api.marketplace.domain.order.model.Order;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ public class OrderRepositoryAdapter implements OrderRepositoryGateway {
     @Override
     public Order findById(UUID id) {
         OrderJpaEntity jpaEntity = repository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new OrderNotFoundException(id));
 
         return mapper.toDomain(jpaEntity);
     }

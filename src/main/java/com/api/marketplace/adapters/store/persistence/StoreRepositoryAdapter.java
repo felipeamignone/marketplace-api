@@ -1,5 +1,6 @@
 package com.api.marketplace.adapters.store.persistence;
 
+import com.api.marketplace.domain.exceptions.StoreNotFoundException;
 import com.api.marketplace.domain.store.gateway.StoreRepositoryGateway;
 import com.api.marketplace.domain.store.model.Store;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,6 @@ public class StoreRepositoryAdapter implements StoreRepositoryGateway {
     public Store findById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toDomain)
-                .orElse(null);
+                .orElseThrow(() -> new StoreNotFoundException(id));
     }
 }

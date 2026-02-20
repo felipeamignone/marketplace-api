@@ -1,5 +1,6 @@
 package com.api.marketplace.adapters.webhook.persistence;
 
+import com.api.marketplace.domain.exceptions.WebhookNotFoundToStoreIdException;
 import com.api.marketplace.domain.webhook.gateway.WebhookRepositoryGateway;
 import com.api.marketplace.domain.webhook.model.Webhook;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,11 @@ public class WebhookRepositoryAdapter implements WebhookRepositoryGateway {
 
     @Override
     public List<Webhook> findByStoreId(UUID storeId) {
-        return repository.findByStoreIdsContaining(storeId).stream()
+        List<WebhookJpaEntity> webhookJpaEntities = repository.findByStoreIdsContaining(storeId);
+        if(webhookJpaEntities.isEmpty()){
+            throw new WebhookNotFoundToStoreIdException(storeId);
+        }
+        return webhookJpaEntities.stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
     }
