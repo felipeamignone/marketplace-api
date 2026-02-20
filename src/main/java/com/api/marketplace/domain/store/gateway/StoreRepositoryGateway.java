@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface StoreRepositoryGateway {
     Store save(Store newStore);
-    Store findByExternalId(UUID externalId);
+    Store findById(UUID id);
 }
